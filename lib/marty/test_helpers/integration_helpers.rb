@@ -91,13 +91,15 @@ module Marty::TestHelpers::IntegrationHelpers
   end
 
   def press button_name, index_of = 0
-    begin
-      cmp = first("a[data-qtip='#{button_name}']")
-      cmp ||= first(:xpath, ".//a", text: "#{button_name}")
-      cmp ||= find(:btn, button_name, match: :first)
-      cmp.click
-    rescue
-      find_by_id(ext_button_id(button_name, index_of), visible: :all).click
+    wait_for_element do
+      begin
+        cmp = first("a[data-qtip='#{button_name}']")
+        cmp ||= first(:xpath, ".//a", text: "#{button_name}")
+        cmp ||= find(:btn, button_name, match: :first)
+        cmp.click
+      rescue
+        find_by_id(ext_button_id(button_name, index_of), visible: :all).click
+      end
     end
   end
 
