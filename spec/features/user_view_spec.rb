@@ -137,7 +137,6 @@ feature 'on User View', js: true do
         find(:btn, 'New User', match: :first)
         #selection needed to make delete button disappear
         select_row(1, uv)
-        wait_for_ajax
         expect(btn_disabled?('New User', uv)).to be_truthy
         expect(btn_disabled?('Edit in form', uv)).to be_truthy
         expect(btn_disabled?('Delete', uv)).to be_truthy
@@ -150,7 +149,6 @@ feature 'on User View', js: true do
         find(:btn, 'New User', match: :first)
         #selection needed to make delete button disappear
         select_row(1, uv)
-        wait_for_ajax
         expect(btn_disabled?('New User', uv)).to be_truthy
         expect(btn_disabled?('Edit in form', uv)).to be_truthy
         expect(btn_disabled?('Delete', uv)).to be_truthy
