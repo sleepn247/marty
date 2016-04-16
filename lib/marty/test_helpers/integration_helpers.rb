@@ -161,10 +161,11 @@ module Marty::TestHelpers::IntegrationHelpers
   end
 
   def run_js js_str, seconds_to_wait = 5.0, sleeptime = 0.1
-    wait_for_element(seconds_to_wait, sleeptime) do
+    result = wait_for_element(seconds_to_wait, sleeptime) do
       res = page.execute_script(js_str)
       res.nil? ? true : res
     end
+    result
   end
 
   # Component helpers
@@ -187,7 +188,8 @@ module Marty::TestHelpers::IntegrationHelpers
     run_js <<-JS
       var field = Ext.ComponentQuery.query("#{field_type}#{args1}")[0];
       field = field || Ext.ComponentQuery.query("#{field_type}#{args2}")[0];
-      field.setValue("#{value}")
+      field.setValue("#{value}");
+      return true;
     JS
   end
 
@@ -310,9 +312,11 @@ module Marty::TestHelpers::IntegrationHelpers
   # Netzke helper methods
   # Grid helpers
   def id_of component
-    run_js <<-JS
-      return #{component}.view.id;
+    res = run_js <<-JS
+      var c = #{component};
+      return c.view.id;
     JS
+    res
   end
 
   def row_count grid
@@ -468,7 +472,7 @@ module Marty::TestHelpers::IntegrationHelpers
     # hacky: delay for combobox to render, assumes that the combobox is not empty
     run_js <<-JS
       #{ext_var(grid, 'grid')}
-      #{ext_var(ext_netzkecombo, 'combo')}
+      #{ext_var(ext_netzkecombo(field), 'combo')}
       var result = [];
       #{ext_var(ext_celleditor, 'editor')}
       var store = combo.getStore();
@@ -504,7 +508,7 @@ module Marty::TestHelpers::IntegrationHelpers
     <<-JS
       #{ext_var(grid, 'grid')}
       #{ext_var(ext_netzkecombo(field), 'combo')}
-      #{ext_var(ext_celleditor('grid'), 'editor')}
+      #{ext_var(ext_celleditor, 'editor')}
 
       editor.startEditByPosition({ row:#{row.to_i-1},
         column:grid.headerCt.items.findIndex('name', '#{field}') });
@@ -548,8 +552,9 @@ module Marty::TestHelpers::IntegrationHelpers
   def end_edit(row, field, grid)
     run_js <<-JS
       #{ext_var(grid, 'grid')}
-      #{ext_var(ext_celleditor(field), 'editor')}
+      #{ext_var(ext_celleditor, 'editor')}
       editor.completeEdit();
+      return true;
     JS
   end
 
