@@ -138,7 +138,9 @@ module Marty::TestHelpers::IntegrationHelpers
   end
 
   def zoom_out component
-    el = find_by_id(id_of(component))
+    el = wait_for_element do
+      find_by_id(id_of(component))
+    end
     el.native.send_keys([:control, '0'])
     el.native.send_keys([:control, '-'])
     el.native.send_keys([:control, '-'])
@@ -388,7 +390,7 @@ module Marty::TestHelpers::IntegrationHelpers
   end
 
   def select_row(row, grid, click_after=true)
-    resid = run_js <<-JS
+    resid = run_js(6) <<-JS
       #{ext_var(grid, 'grid')}
       grid.getSelectionModel().select(#{row.to_i-1});
       return grid.getView().getNode(#{row.to_i-1}).id;
@@ -469,11 +471,13 @@ module Marty::TestHelpers::IntegrationHelpers
       #{start_edit_grid_combobox(row, field, grid)}
     JS
 
+
+
     # hacky: delay for combobox to render, assumes that the combobox is not empty
     run_js <<-JS
       #{ext_var(grid, 'grid')}
       #{ext_var(ext_netzkecombo(field), 'combo')}
-      var result = [];
+      var r = [];
       #{ext_var(ext_celleditor, 'editor')}
       var store = combo.getStore();
 
