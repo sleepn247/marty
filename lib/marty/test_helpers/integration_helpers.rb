@@ -140,9 +140,8 @@ module Marty::TestHelpers::IntegrationHelpers
   end
 
   def zoom_out component
-    el = wait_for_element do
-      find_by_id(id_of(component))
-    end
+    el_id = id_of(component)
+    el = wait_for_element { find_by_id(el_id) }
     el.native.send_keys([:control, '0'])
     el.native.send_keys([:control, '-'])
     el.native.send_keys([:control, '-'])
@@ -166,7 +165,8 @@ module Marty::TestHelpers::IntegrationHelpers
 
   def run_js js_str, seconds_to_wait = MAX_WAIT_TIME, sleeptime = 0.1
     result = wait_for_element(seconds_to_wait, sleeptime) do
-      res = page.execute_script(js_str)
+      res = nil
+      page.document.synchronize { res = page.execute_script(js_str) }
       res.nil? ? true : res
     end
     result
