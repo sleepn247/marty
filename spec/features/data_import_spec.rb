@@ -102,10 +102,8 @@ feature 'on Data Import', js: true do
 
     and_by 'background job has shown up' do
       wait_for_ajax
-      within(:gridpanel, 'promise_view', match: :first) do
-        find(:xpath, "//tr[contains(@class, 'green-row')]", match: :first)
-        expect(row_count(treepanel('promise_view'))).to eq 1
-      end
+      expect(row_count(treepanel('promise_view'))).to eq 1
+      find(:xpath, "//tr[contains(@class, 'green-row')]", match: :first)
     end
 
     and_by '2 Fannie bups got added' do

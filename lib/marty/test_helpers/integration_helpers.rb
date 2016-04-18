@@ -473,8 +473,6 @@ module Marty::TestHelpers::IntegrationHelpers
       #{start_edit_grid_combobox(row, field, grid)}
     JS
 
-
-
     # hacky: delay for combobox to render, assumes that the combobox is not empty
     run_js <<-JS
       #{ext_var(grid, 'grid')}
