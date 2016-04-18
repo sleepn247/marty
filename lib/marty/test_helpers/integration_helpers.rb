@@ -1,5 +1,7 @@
 module Marty::TestHelpers::IntegrationHelpers
 
+  MAX_WAIT_TIME = 5.0
+
   # without rspec-by gem, essentially works as documentation & wait
   def by message, level=0
     wait_for_ready(10)
@@ -162,7 +164,7 @@ module Marty::TestHelpers::IntegrationHelpers
     res
   end
 
-  def run_js js_str, seconds_to_wait = 5.0, sleeptime = 0.1
+  def run_js js_str, seconds_to_wait = MAX_WAIT_TIME, sleeptime = 0.1
     result = wait_for_element(seconds_to_wait, sleeptime) do
       res = page.execute_script(js_str)
       res.nil? ? true : res
@@ -390,7 +392,7 @@ module Marty::TestHelpers::IntegrationHelpers
   end
 
   def select_row(row, grid, click_after=true)
-    resid = run_js(6) <<-JS
+    resid = run_js(<<-JS, 6.0)
       #{ext_var(grid, 'grid')}
       grid.getSelectionModel().select(#{row.to_i-1});
       return grid.getView().getNode(#{row.to_i-1}).id;
