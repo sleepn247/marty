@@ -136,6 +136,7 @@ feature 'on User View', js: true do
       and_by 'viewer denied access' do
         find(:btn, 'New User', match: :first)
         #selection needed to make delete button disappear
+        wait_for_ajax
         select_row(1, uv)
         expect(btn_disabled?('New User', uv)).to be_truthy
         expect(btn_disabled?('Edit in form', uv)).to be_truthy
@@ -148,6 +149,7 @@ feature 'on User View', js: true do
       and_by 'developer denied access' do
         find(:btn, 'New User', match: :first)
         #selection needed to make delete button disappear
+        wait_for_ajax
         select_row(1, uv)
         expect(btn_disabled?('New User', uv)).to be_truthy
         expect(btn_disabled?('Edit in form', uv)).to be_truthy
