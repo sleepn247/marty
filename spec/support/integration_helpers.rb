@@ -140,12 +140,14 @@ module Marty::IntegrationHelpers
   end
 
   def zoom_out component
-    el_id = id_of(component)
-    el = wait_for_element { find_by_id(el_id) }
-    el.native.send_keys([:control, '0'])
-    el.native.send_keys([:control, '-'])
-    el.native.send_keys([:control, '-'])
-    el.native.send_keys([:control, '-'])
+    wait_for_element do
+      el_id = id_of(component)
+      el = find_by_id(el_id)
+      el.native.send_keys([:control, '0'])
+      el.native.send_keys([:control, '-'])
+      el.native.send_keys([:control, '-'])
+      el.native.send_keys([:control, '-'])
+    end
   end
 
   def wait_for_element(seconds_to_wait = 2.0, sleeptime = 0.1)
