@@ -7,7 +7,6 @@ feature 'under Applications menu, Reports using  Data Import', js: true do
     save_clean_db(@clean_file)
     dt = Time.zone.now
 
-    Mcfly.whodunnit = UserHelpers.system_user.login
     Marty::Script.load_scripts(nil, dt)
 
     populate_import_type
