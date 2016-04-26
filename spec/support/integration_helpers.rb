@@ -73,6 +73,7 @@ module Marty::IntegrationHelpers
     end
 
     find(:xpath, "//span", text: 'Sign in', match: :first, wait: 5).click
+    find(:xpath, "//span", text: 'Password', match: :first, wait: 5)
     fill_in("login", :with => username)
     fill_in("password", :with => password)
     press("OK")
