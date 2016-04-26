@@ -403,7 +403,6 @@ module Marty::IntegrationHelpers
       find_by_id(resid).click if click_after
     end
     wait_for_ajax
-    return resid
   end
 
   def set_row_vals row, grid, fields
