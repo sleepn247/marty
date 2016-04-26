@@ -394,15 +394,14 @@ module Marty::IntegrationHelpers
   end
 
   def select_row(row, grid, click_after=true)
-    wait_for_element do
-      resid = run_js(<<-JS, 6.0)
-        #{ext_var(grid, 'grid')}
-        grid.getSelectionModel().select(#{row.to_i-1});
-        return grid.getView().getNode(#{row.to_i-1}).id;
-      JS
-      find_by_id(resid).click if click_after
-    end
+    resid = run_js(<<-JS, 10.0)
+      #{ext_var(grid, 'grid')}
+      grid.getSelectionModel().select(#{row.to_i-1});
+      return grid.getView().getNode(#{row.to_i-1}).id;
+    JS
+    find_by_id(resid).click if click_after
     wait_for_ajax
+    return resid
   end
 
   def set_row_vals row, grid, fields
